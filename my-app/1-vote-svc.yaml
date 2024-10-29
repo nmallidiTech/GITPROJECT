@@ -4,6 +4,7 @@ metadata:
     name: vote
     labels:
         role: vote
+    namespace: prod
 spec:
     selector:
         role: vote
