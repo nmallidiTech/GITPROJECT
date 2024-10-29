@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kubernetes.io/change-cause: "Initial version of v1"
+  name: vote
+  labels:
+    role: vote
+spec:
+  replicas: 1
+  minReadySeconds: 20
+  strategy:
+    rollingUpdate:
+       maxSurge: 2
+       maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: python
+      role: vote
+    matchExpressions:
+      - key: version
+        operator: Exists
+  template:
+    metadata:
+      name: vote
+      labels:
+        app: python
+        role: vote
+        version: v2
+    spec:
+      containers:
+      - name: app
+        image: nmalliditech/vote:v0.1.0
